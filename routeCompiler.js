@@ -14,6 +14,8 @@ function routeCompiler(string) {
     colon = pathSegs[i].indexOf(':');
     if (colon === 0) {
       parsedSeg += "(.*)"
+    } else if (colon > 0) {
+      parsedSeg += pathSegs[i].slice(0, colon) + "(.*)";
     } else {
       parsedSeg += pathSegs[i];
     }
