@@ -27,3 +27,5 @@ function routeCompiler(string) {
 
   return new RegExp(rawString);
 }
+
+module.exports = routeCompiler;
