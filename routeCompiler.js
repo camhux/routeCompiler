@@ -1,8 +1,11 @@
 function routeCompiler(string) {
   var rawString = "^\\/";
   var pathSegs;
+  var rawSeg;
   var parsedSeg;
   var colon;
+  var optional;
+  var end;
   var i;
 
   if (string.charAt(0) === '/') string = string.slice(1);
@@ -10,16 +13,31 @@ function routeCompiler(string) {
   pathSegs = string.split('/');
 
   for (i = 0; i < pathSegs.length; ++i) {
+    end = (i === pathSegs.length - 1);
+    rawSeg = pathSegs[i];
     parsedSeg = "";
-    colon = pathSegs[i].indexOf(':');
-    if (colon === 0) {
-      parsedSeg += "(.*)"
-    } else if (colon > 0) {
-      parsedSeg += pathSegs[i].slice(0, colon) + "(.*)";
-    } else {
-      parsedSeg += pathSegs[i];
+    colon = rawSeg.indexOf(':');
+    if (colon > -1) {
+      optional = rawSeg.indexOf('?') > -1;
+      parsedSeg += rawSeg.slice(0, colon) + "(.*";
+      if (optional) {
+        parsedSeg += "\\/)"
+      }
     }
-    parsedSeg += (i === pathSegs.length - 1) ? "" : "\\/"
+
+
+
+
+
+
+    // if (colon === 0) {
+    //   parsedSeg += "(.*)"
+    // } else if (colon > 0) {
+    //   parsedSeg += rawSeg.slice(0, colon) + "(.*)";
+    // } else {
+    //   parsedSeg += rawSeg;
+    // }
+    // parsedSeg += (i === pathSegs.length - 1) ? "" : "\\/"
     rawString += parsedSeg;
   }
 
